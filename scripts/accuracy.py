@@ -12,10 +12,8 @@ target_tif = Image.open(TubeMap_output_filepath)
 assert reference_tif.n_frames == target_tif.n_frames, "The number of frames in the stacks must be the same."
 
 pixel_differences = []
-mse_differences = []
-ssim_differences = []
-total_pixel_differences = []
-total_pixels_per_slice = []
+# mse_differences = []
+# ssim_differences = []
 percent_differences = []
 
 
@@ -34,41 +32,44 @@ for i in range(reference_tif.n_frames):
     difference = target_frame - reference_frame
     # Pixel Differences per Slice: Number of differing pixels.
     pixel_difference = np.sum(difference != 0)
+    
     # MSE Differences per Slice: Mean Squared Error.
     # mse_difference = np.mean(np.square(difference))
     # # SSIM Differences per Slice: Structural Similarity Index.
     # ssim_difference = ssim(reference_frame, target_frame, data_range=target_frame.max() - target_frame.min(), multichannel=True)
     
-    total_pixel_difference = np.sum(np.abs(difference))
-    
     # Calculate total number of pixels in the slice
     total_pixels = reference_frame.shape[0] * reference_frame.shape[1]
 
     percent_differences.append((pixel_difference / total_pixels) * 100)
-    
     pixel_differences.append(pixel_difference)
     # mse_differences.append(mse_difference)
     # ssim_differences.append(ssim_difference)
     # total_pixel_differences.append(total_pixel_difference)
 
-
+# ------------------------------------------------
 # Print the results
-print("Pixel Differences per Slice:")
-print(pixel_differences)
-# print("MSE Differences per Slice:")
-# print(mse_differences)
-# print("SSIM Differences per Slice:")
-# print(ssim_differences)
-print("Total Pixels per Slice:")
-print(total_pixels)
-print("Percent Differences per Slice:")
-print(percent_differences)
-
+# print("Pixel Differences per Slice:")
+# print(pixel_differences)
+# print("Total Pixels per Slice:")
+# print(total_pixels)
+# print("Percent Differences per Slice:")
+# print(percent_differences)
+# ------------------------------------------------
 total_pixel_difference = 0
 for i in range(len(pixel_differences)):
-    print("Slice", i, "Percent Difference:", pixel_differences[i])
+    # print("Slice", i, "Pixel Difference:", pixel_differences[i])
     total_pixel_difference += pixel_differences[i]
     
 avg_pixel_difference = total_pixel_difference / len(pixel_differences)
 print("Average Pixel Difference:")
 print(avg_pixel_difference)
+# ------------------------------------------------
+total_percent_difference = 0
+for i in range(len(percent_differences)):
+    # print("Slice", i, "Percent Difference:", percent_differences[i])
+    total_percent_difference += percent_differences[i]
+    
+avg_percent_difference = total_percent_difference / len(percent_differences)
+print("Average Percent Difference:")
+print(avg_percent_difference)
