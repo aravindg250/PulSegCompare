@@ -1,47 +1,74 @@
 from PIL import Image
-from filePaths import TubeMap_output_filepath
-# Open the multi-image TIFF file
-tif = Image.open(TubeMap_output_filepath)
-# Access the first image in the stack
-tif.seek(0)
-print("Image 0 (First Slice):")
+import numpy as np
+from skimage.metrics import structural_similarity as ssim
+from filePaths import tif_seg_output, TubeMap_output_filepath
 
-# Convert the image to grayscale if it's not already
-if tif.mode != 'L':
-    tif = tif.convert('L')
 
-print("Image Mode:" + tif.mode) # 'L' for grayscale
+# Open the TIFF stacks
+reference_tif = Image.open(tif_seg_output)
+target_tif = Image.open(TubeMap_output_filepath)
 
-# Get image dimensions
-width, height = tif.size
-print(f"Image Dimensions: {width} x {height}")
-# Create an empty array to store results
-binary_array = []
+# Check if the number of frames in both stacks are the same
+assert reference_tif.n_frames == target_tif.n_frames, "The number of frames in the stacks must be the same."
 
-# Threshold value to distinguish black and white
-threshold = 128
+pixel_differences = []
+mse_differences = []
+ssim_differences = []
+total_pixel_differences = []
+total_pixels_per_slice = []
+percent_differences = []
 
-# Iterate through each pixel in the first image
-for y in range(height):
-    row = []
-    for x in range(width):
-        # Get pixel value
-        pixel_value = tif.getpixel((x, y))
-        # Determine if pixel is black (1) or white (0)
-        if pixel_value < threshold:
-            row.append(1)  # Black
-        else:
-            row.append(0)  # White
-    binary_array.append(row)
 
-# Print the binary array
-for row in binary_array:
-    print(row)
+for i in range(reference_tif.n_frames):
+    reference_tif.seek(i)
+    target_tif.seek(i)
 
-def print_image(tif):
-    # Print all pixel values of the first image
-    for y in range(height):
-        for x in range(width):
-            pixel_value = tif.getpixel((x, y))
-            print(f"Pixel value at ({x}, {y}): {pixel_value}")
+    # Convert the images to numpy arrays
+    reference_frame = np.array(reference_tif)
+    target_frame = np.array(target_tif)
 
+    # Check if the dimensions of the frames are the same
+    assert reference_frame.shape == target_frame.shape, "The dimensions of the frames must be the same."
+
+    # Calculate the difference
+    difference = target_frame - reference_frame
+    # Pixel Differences per Slice: Number of differing pixels.
+    pixel_difference = np.sum(difference != 0)
+    # MSE Differences per Slice: Mean Squared Error.
+    # mse_difference = np.mean(np.square(difference))
+    # # SSIM Differences per Slice: Structural Similarity Index.
+    # ssim_difference = ssim(reference_frame, target_frame, data_range=target_frame.max() - target_frame.min(), multichannel=True)
+    
+    total_pixel_difference = np.sum(np.abs(difference))
+    
+    # Calculate total number of pixels in the slice
+    total_pixels = reference_frame.shape[0] * reference_frame.shape[1]
+
+    percent_differences.append((pixel_difference / total_pixels) * 100)
+    
+    pixel_differences.append(pixel_difference)
+    # mse_differences.append(mse_difference)
+    # ssim_differences.append(ssim_difference)
+    # total_pixel_differences.append(total_pixel_difference)
+
+
+# Print the results
+print("Pixel Differences per Slice:")
+print(pixel_differences)
+# print("MSE Differences per Slice:")
+# print(mse_differences)
+# print("SSIM Differences per Slice:")
+# print(ssim_differences)
+print("Total Pixels per Slice:")
+print(total_pixels)
+print("Percent Differences per Slice:")
+print(percent_differences)
+
+total_pixel_difference = 0
+for i in range(len(pixel_differences)):
+    print("Slice", i, "Percent Difference:", pixel_differences[i])
+    total_pixel_difference += pixel_differences[i]
+    
+avg_pixel_difference = total_pixel_difference / len(pixel_differences)
+print("Average Pixel Difference:")
+print(avg_pixel_difference)
