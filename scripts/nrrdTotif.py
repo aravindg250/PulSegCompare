@@ -11,6 +11,9 @@ def nrrd_to_npy(nrrd_filepath, npy_filepath):
     print(f"NRRD data saved as NPY file at {npy_filepath}")
 
 # Resize each slice in the NPY data and save as a single multi-page TIFF
+import numpy as np
+from PIL import Image
+
 def npy_to_resized_tiff(npy_filepath, tiff_filepath, new_width, new_height):
     data = np.load(npy_filepath)
     
@@ -25,28 +28,23 @@ def npy_to_resized_tiff(npy_filepath, tiff_filepath, new_width, new_height):
     print(f"Original dimensions: {original_width} x {original_height} x {original_depth}")
     
     # Calculate padding
-    pad_top = new_height - original_height
-    pad_left = new_width - original_width
-    print(f"Padding: top={pad_top}, left={pad_left}")
+    pad_bottom = new_height - original_height
+    pad_right = new_width - original_width
+    print(f"Padding: bottom={pad_bottom}, right={pad_right}")
 
     # Resize each slice
     resized_slices = []
     for i in range(data.shape[0]):
         frame = Image.fromarray(data[i])
         new_frame = Image.new("L", (new_width, new_height), color=255)  # 'L' mode for grayscale
-        new_frame.paste(frame, (pad_left, pad_top))
+        new_frame.paste(frame, (pad_right, 0))  # Paste at top-left corner
         resized_slices.append(new_frame)
     
-    #print every pixel value of every slice
+    # Print every pixel value of the first slice
     for i in range(resized_slices[0].size[1]):
         for j in range(resized_slices[0].size[0]):
             print(resized_slices[0].getpixel((j, i)), end=" ")
         print()
-    
-    # for i in range(resized_slices[0].size[1]):
-    #     for j in range(resized_slices[0].size[0]):
-    #         print(resized_slices[0].getpixel((j, i)), end=" ")
-    #     print()
     
     # Ensure the file has the correct extension
     if not tiff_filepath.lower().endswith(('.tif', '.tiff')):
@@ -55,6 +53,9 @@ def npy_to_resized_tiff(npy_filepath, tiff_filepath, new_width, new_height):
     # Save all slices as a multi-page TIFF
     resized_slices[0].save(tiff_filepath, save_all=True, append_images=resized_slices[1:])
     print(f"All slices saved as a resized multi-page TIFF at {tiff_filepath}")
+
+# Example usage
+# npy_to_resized_tiff('path_to_input.npy', 'path_to_output.tiff', new_width, new_height)
 
 def change_region_to_white(tiff_filepath, output_filepath, region):
 
