@@ -36,3 +36,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - scikit-image
 - nrrd
 
+## TODO
+- [ ] Make a region with connected black pixels
+- [ ] Find eccentricity index for all regions
+- [ ] Ones closer to 0 are probably vessel versus other being cros sections or others
+- [ ] Compare to the segmentation (make sure overlap and offset are right)
+- [ ] Find areas that have about 75% similarity within the overlap region
+- [ ] Those are probably what the tubmap picked up as vessels
+- [ ] Go step by step making each a function and then put together
