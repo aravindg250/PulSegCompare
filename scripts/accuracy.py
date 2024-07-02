@@ -34,9 +34,9 @@ for i in range(reference_tif.n_frames):
     pixel_difference = np.sum(difference != 0)
     
     # MSE Differences per Slice: Mean Squared Error.
-    # mse_difference = np.mean(np.square(difference))
-    # # SSIM Differences per Slice: Structural Similarity Index.
-    # ssim_difference = ssim(reference_frame, target_frame, data_range=target_frame.max() - target_frame.min(), multichannel=True)
+    mse_difference = np.mean(np.square(difference))
+    # SSIM Differences per Slice: Structural Similarity Index.
+    ssim_difference = ssim(reference_frame, target_frame, data_range=target_frame.max() - target_frame.min(), multichannel=True)
     
     # Calculate total number of pixels in the slice
     total_pixels = reference_frame.shape[0] * reference_frame.shape[1]
@@ -73,3 +73,9 @@ for i in range(len(percent_differences)):
 avg_percent_difference = total_percent_difference / len(percent_differences)
 print("Average Percent Difference:")
 print(avg_percent_difference)
+
+'''
+histagram of slice errors
+finding the size fo the vessel 
+
+'''
