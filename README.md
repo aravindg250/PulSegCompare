@@ -1,4 +1,4 @@
-# Pulmonary Hypertension MicroCT Segmentation Comparison
+# Pulmonary Hypertension Segmentation Comparison
 
 Pulmonary hypertension (PH) is a deadly disease with a worse prognosis than systemic hypertension. In PH, the distal pulmonary vasculature remodels, leading to an increase in blood pressure within the lungs. To track disease progress, clinicians use imaging such as computed tomography (CT) and magnetic resonance imaging (MRI) to quantify changes in lung geometry and morphometry. However, many of the most important changes occur in the distal vasculature that are too small to capture with typical imaging approaches.
 
