@@ -35,7 +35,7 @@ def npy_to_resized_tiff(npy_filepath, tiff_filepath, new_width, new_height):
     for i in range(data.shape[0]):
         frame = Image.fromarray(data[i])
         new_frame = Image.new("L", (new_width, new_height), color=255)  # 'L' mode for grayscale
-        new_frame.paste(frame, (pad_right, 0))  # Paste at top-left corner
+        new_frame.paste(frame, (pad_bottom, 0))  # Paste at top-left corner
         resized_slices.append(new_frame)
     
     # Print every pixel value of the first slice
