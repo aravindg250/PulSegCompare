@@ -28,14 +28,17 @@ def npy_to_resized_tiff(npy_filepath, tiff_filepath, new_width, new_height):
     # Calculate padding
     pad_top = new_height - original_height
     pad_left = new_width - original_width
-    print(f"Padding: left={pad_top}, left={pad_left}")
+    print(f"Padding: top={pad_top}, left={pad_left}")
 
+    half_pad_top = int(pad_top / 2)
+    half_pad_left = int(pad_left / 2)
+    print(f"Half padding: top={half_pad_top}, left={half_pad_left}")
     # Resize each slice
     resized_slices = []
     for i in range(data.shape[0]):
         frame = Image.fromarray(data[i])
         new_frame = Image.new("L", (new_width, new_height), color=255)  # 'L' mode for grayscale
-        new_frame.paste(frame, (pad_left, pad_top))  # Paste at top-left corner
+        new_frame.paste(frame, (pad_left, 0))  # Paste at top-left corner
         resized_slices.append(new_frame)
     
     # # Print every pixel value of the first slice

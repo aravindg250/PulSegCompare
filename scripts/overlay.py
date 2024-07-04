@@ -1,7 +1,7 @@
 from PIL import Image
 import numpy as np
 
-def overlay_tiffs(reference_path, target_path, output_path):
+def overlay_tifs(reference_path, target_path, output_path):
     # Open the TIFF stacks
     reference_tif = Image.open(reference_path)
     target_tif = Image.open(target_path)

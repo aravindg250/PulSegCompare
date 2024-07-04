@@ -54,3 +54,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [ ] Find areas that have about 75% similarity within the overlap region
 - [ ] Those are probably what the tubmap picked up as vessels
 - [ ] Go step by step making each a function and then put together
+- [ ] histagram of slice errors
+- [ ] finding the size fo the vessel 

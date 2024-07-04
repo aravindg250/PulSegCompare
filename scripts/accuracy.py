@@ -73,9 +73,3 @@ for i in range(len(percent_differences)):
 avg_percent_difference = total_percent_difference / len(percent_differences)
 print("Average Percent Difference:")
 print(avg_percent_difference)
-
-'''
-histagram of slice errors
-finding the size fo the vessel 
-
-'''
