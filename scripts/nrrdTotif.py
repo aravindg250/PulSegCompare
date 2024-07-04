@@ -11,8 +11,6 @@ def nrrd_to_npy(nrrd_filepath, npy_filepath):
     print(f"NRRD data saved as NPY file at {npy_filepath}")
 
 # Resize each slice in the NPY data and save as a single multi-page TIFF
-import numpy as np
-from PIL import Image
 
 def npy_to_resized_tiff(npy_filepath, tiff_filepath, new_width, new_height):
     data = np.load(npy_filepath)
