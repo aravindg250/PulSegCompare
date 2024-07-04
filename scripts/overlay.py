@@ -1,14 +1,5 @@
 from PIL import Image
 import numpy as np
-from filePaths import tif_seg_output, TubeMap_output_filepath
-tif_seg_output9 = 'C:/Users/bennington/Desktop/research_24/Comparisons/Output/SegmentationOutput/output_seg_resized9.tif'
-# Paths to the TIFF stacks
-# reference_tif_path = tif_seg_output
-
-reference_tif_path = tif_seg_output9
-target_tif_path = TubeMap_output_filepath
-output_tif_path = 'Comparisons/Output/OverlayOutput/overlay_output9.tif'
-
 
 def overlay_tiffs(reference_path, target_path, output_path):
     # Open the TIFF stacks
@@ -53,5 +44,3 @@ def overlay_tiffs(reference_path, target_path, output_path):
 
 
 
-# Overlay the TIFF stacks
-overlay_tiffs(reference_tif_path, target_tif_path, output_tif_path)

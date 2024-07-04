@@ -11,5 +11,8 @@ TubeMap_output_filepath = 'C:/Users/bennington/Desktop/research_24/Comparisons/O
 
 # Paths for input NRRD file and output NPY and TIFF files
 nrrd_filepath = 'C:/Users/bennington/Desktop/research_24/Comparisons/Input/SegmentationsNRRD/MouseSegmentation2.nrrd'
-npy_seg_output = 'C:/Users/bennington/Desktop/research_24/Comparisons/Output/SegmentationOutput/mouse_output_seg.npy'
-tif_seg_output = 'C:/Users/bennington/Desktop/research_24/Comparisons/Output/SegmentationOutput/mouse_output_seg_resized1.tif'
+npy_seg_output = 'C:/Users/bennington/Desktop/research_24/Comparisons/Output/SegmentationOutput/seg2/mouse_output_seg.npy'
+tif_seg_output = 'C:/Users/bennington/Desktop/research_24/Comparisons/Output/SegmentationOutput/seg2/mouse_output_seg_resized1.tif'
+
+#Overlay Paths
+overlay_output_tif_path = 'Comparisons/Output/OverlayOutput/overlay_output9.tif'

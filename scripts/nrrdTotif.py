@@ -26,23 +26,23 @@ def npy_to_resized_tiff(npy_filepath, tiff_filepath, new_width, new_height):
     print(f"Original dimensions: {original_width} x {original_height} x {original_depth}")
     
     # Calculate padding
-    pad_bottom = new_height - original_height
-    pad_right = new_width - original_width
-    print(f"Padding: bottom={pad_bottom}, right={pad_right}")
+    pad_top = new_height - original_height
+    pad_left = new_width - original_width
+    print(f"Padding: left={pad_top}, left={pad_left}")
 
     # Resize each slice
     resized_slices = []
     for i in range(data.shape[0]):
         frame = Image.fromarray(data[i])
         new_frame = Image.new("L", (new_width, new_height), color=255)  # 'L' mode for grayscale
-        new_frame.paste(frame, (pad_bottom, 0))  # Paste at top-left corner
+        new_frame.paste(frame, (pad_left, pad_top))  # Paste at top-left corner
         resized_slices.append(new_frame)
     
-    # Print every pixel value of the first slice
-    for i in range(resized_slices[0].size[1]):
-        for j in range(resized_slices[0].size[0]):
-            print(resized_slices[0].getpixel((j, i)), end=" ")
-        print()
+    # # Print every pixel value of the first slice
+    # for i in range(resized_slices[0].size[1]):
+    #     for j in range(resized_slices[0].size[0]):
+    #         print(resized_slices[0].getpixel((j, i)), end=" ")
+    #     print()
     
     # Ensure the file has the correct extension
     if not tiff_filepath.lower().endswith(('.tif', '.tiff')):
