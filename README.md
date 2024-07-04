@@ -1,22 +1,13 @@
 # Pulmonary Hypertension Segmentation Comparison
 
-Pulmonary hypertension (PH) is a deadly disease with a worse prognosis than systemic hypertension. In PH, the distal pulmonary vasculature remodels, leading to an increase in blood pressure within the lungs. To track disease progress, clinicians use imaging such as computed tomography (CT) and magnetic resonance imaging (MRI) to quantify changes in lung geometry and morphometry. However, many of the most important changes occur in the distal vasculature that are too small to capture with typical imaging approaches.
+Pulmonary hypertension (PH) is a deadly disease with a worse prognosis than systemic hypertension. In PH, the distal pulmonary vasculature remodels, leading to increased blood pressure within the lungs. Many of the most important changes occur in the distal vasculature that are too small to capture with typical imaging approaches.
 
-To better understand the time course of disease development, researchers have turned to ex vivo imaging in animal models of disease. Micro-CT has much higher resolution than traditional CT and is able to capture the size of vessels that drive long-term complications. In these micro-CT scans, thousands of vessel segments are present, which poses a challenge for manual measurements.
+To better understand disease development, researchers use ex vivo imaging in animal models. Micro-CT has much higher resolution than traditional CT and can capture the size of vessels that drive long-term complications. These scans contain thousands of vessel segments, making manual measurements challenging.
+
+This repository is part of a Carnegie Mellon University research project that aims to automate the segmentation of the pulmonary arteries from mouse and sheep lungs from MicroCT scans and determine the accuracy of the computer-generated model.
 
 ## Project Overview
 This project investigates an automated segmentation tool to determine its fidelity against manual measurements, focusing on both geometric and morphometric factors that determine patient hemodynamics. We utilize open-source software packages, 3D Slicer and ClearMap, to evaluate images of mouse, sheep, and human lungs with different types of PH. The goal is to quantify the visible changes in the disease.
-
-## Repository Purpose
-This repository is part of a Carnegie Mellon University research project that aims to:
-
-Automate the segmentation of the pulmonary arteries from mouse and sheep lungs from Micro-CT scans.
-Determine the accuracy of the computer-generated model.
-By automating the segmentation process, we hope to streamline the analysis of these high-resolution scans and provide more accurate and reproducible measurements of disease progression.
-
-## Tools and Software
-* 3D Slicer: An open-source software platform for medical image informatics, image processing, and three-dimensional visualization.
-* ClearMap: A software for analyzing, visualizing, and exploring large-scale biological image data.
 
 ## Features
 
@@ -46,6 +37,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - PILLOW
 - scikit-image
 - nrrd
+
+## Tools and Software
+* 3D Slicer: An open-source software platform for medical image informatics, image processing, and three-dimensional visualization.
+* ClearMap: A software for analyzing, visualizing, and exploring large-scale biological image data.
 
 ## Tools and Software
 * 3D Slicer: An open-source software platform for medical image informatics, image processing, and three-dimensional visualization.
