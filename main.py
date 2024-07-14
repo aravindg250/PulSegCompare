@@ -2,8 +2,8 @@ from scripts.nrrdTotif import nrrd_to_npy, npy_to_resized_tiff, change_region_to
 from scripts.filePaths import *
 from scripts.overlay import overlay_tifs
 # New dimensions
-new_width = 417
-new_height = 415
+new_width = 398
+new_height = 401
 region = (0, 0, 65, 55)  #(left, top, right, bottom) to be changed to white
 
 # Convert NRRD to NPY
@@ -14,6 +14,7 @@ npy_to_resized_tiff(npy_seg_output, tif_seg_output_resized, new_width, new_heigh
 
 # Change the region to white in all images
 change_region_to_white(TubeMapInitial, TubeMap_output_filepath, region)
+
 change_region_to_white(tif_seg_output_resized, tif_seg_output_resized_white, region)
 
 # Overlay the TIFF stacks
@@ -22,3 +23,4 @@ target_tif_path = TubeMap_output_filepath
 output_tif_path = overlay_output_tif_path
 
 overlay_tifs(reference_tif_path, target_tif_path, output_tif_path)
+
