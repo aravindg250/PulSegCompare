@@ -1,0 +1,32 @@
+import numpy as np
+from PIL import Image
+
+def tiff_to_npy(tiff_file, npy_file):
+    # Open the TIFF file
+    img = Image.open(tiff_file)
+
+    # List to hold all frames
+    frames = []
+
+    # Iterate through each frame
+    try:
+        while True:
+            frame = np.array(img)
+            frames.append(frame)
+            img.seek(img.tell() + 1)
+    except EOFError:
+        pass  # End of file
+
+    # Convert list of frames to a single NumPy array
+    frames_array = np.stack(frames, axis=0)
+
+    # Save the array to a .npy file
+    np.save(npy_file, frames_array)
+
+# Example usage
+tiff_file_path = 'path/to/your/multi_image_stack.tif'
+npy_file_path = 'path/to/save/your/output.npy'
+
+tiff_to_npy(tiff_file_path, npy_file_path)
+
+print(f"TIFF file has been converted to {npy_file_path}")
