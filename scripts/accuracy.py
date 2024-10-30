@@ -1,11 +1,11 @@
 from PIL import Image
 import numpy as np
 from skimage.metrics import structural_similarity as ssim
-from filePaths import tif_seg_output, TubeMap_output_filepath
+from filePaths import tif_seg_output_resized_white, TubeMap_output_filepath
 
 
 # Open the TIFF stacks
-reference_tif = Image.open(tif_seg_output)
+reference_tif = Image.open(tif_seg_output_resized_white)
 target_tif = Image.open(TubeMap_output_filepath)
 
 # Check if the number of frames in both stacks are the same

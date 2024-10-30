@@ -1,7 +1,8 @@
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageDraw
+import matplotlib.pyplot as plt
 from skimage.measure import label, regionprops
-from skimage.morphology import skeletonize
+from skimage.morphology import skeletonize, medial_axis
 from scripts.filePaths import *
 
 # Define the resolution (micrometers per pixel)
@@ -106,7 +107,10 @@ def find_similar_areas(overlap, threshold=0.75):
 # Skeletonize and find center of vessels
 def skeletonize_and_find_centers(stack):
     if isinstance(stack, np.ndarray):
-        skeletons = skeletonize(stack > 0)  # Ensure binary input for skeletonization
+        skeletons = np.zeros_like(stack)
+        for i in range(stack.shape[0]):
+            skeleton, _ = medial_axis(stack[i], return_distance=True)
+            skeletons[i] = skeleton
         centers = np.argwhere(skeletons)
         return skeletons, centers
     else:
@@ -121,6 +125,38 @@ def compare_vessel_size(segmentation_stack, skeletons):
         return accuracy
     else:
         raise ValueError("Inputs to compare_vessel_size are not NumPy arrays.")
+
+# Save TIFF stack
+def save_tiff_stack(stack, path):
+    images = [Image.fromarray((frame * 255).astype(np.uint8)) for frame in stack]
+    images[0].save(path, save_all=True, append_images=images[1:])
+
+# Save binary overlay image with accepted/disregarded areas
+def save_overlay_image(image, accepted, path):
+    overlay = Image.fromarray((image * 255).astype(np.uint8)).convert("RGB")
+    draw = ImageDraw.Draw(overlay)
+    for region in accepted:
+        for coord in region.coords:
+            draw.point((coord[1], coord[0]), fill="green")
+    overlay.save(path)
+
+# Save histogram
+def save_histogram(data, bins, title, path):
+    plt.figure()
+    plt.hist(data, bins=bins, edgecolor='black')
+    plt.title(title)
+    plt.savefig(path)
+    plt.close()
+
+# Save bar chart
+def save_bar_chart(data, bins, title, xlabel, ylabel, path):
+    plt.figure()
+    plt.hist(data, bins=bins, edgecolor='black')
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.savefig(path)
+    plt.close()
 
 # Main function to run all steps
 def main():
@@ -158,6 +194,18 @@ def main():
     similar_areas = find_similar_areas(overlap)
     skeletons, centers = skeletonize_and_find_centers(overlap)
     accuracy = compare_vessel_size(segmentation_stack, skeletons)
+
+    # Save visualization results
+    save_tiff_stack(segmentation_stack, "segmentation_stack.tiff")
+    save_tiff_stack(generated_stack, "generated_stack.tiff")
+    save_tiff_stack(overlap.astype(np.uint8), "overlap_stack.tiff")
+    save_tiff_stack(skeletons.astype(np.uint8), "skeletons_stack.tiff")
+    
+    save_overlay_image(segmentation_stack[0], regions, "accepted_regions_overlay.png")
+    save_histogram(connected_vessel_areas, bins=20, title="Connected Vessel Areas Distribution", path="connected_vessel_areas_histogram.png")
+    save_histogram(circularities, bins=20, title="Circularity Indices Distribution", path="circularity_histogram.png")
+    save_histogram(eccentricities, bins=20, title="Eccentricity Indices Distribution", path="eccentricity_histogram.png")
+    save_bar_chart([accuracy], bins=[0, 1], title="Vessel Size Comparison Accuracy", xlabel="Accuracy", ylabel="Frequency", path="accuracy_bar_chart.png")
 
     print(f"Connected Vessel Areas (in micrometers^2): {connected_vessel_areas}")
     print(f"Average Area per Slice (in micrometers^2): {average_area:.2f}")
